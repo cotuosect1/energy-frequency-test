@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Energy Frequency Discovery Test</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #0a0a0a; color: #f2f2f2; padding: 5vw; }
+    h1, h2 { text-align: center; color: gold; font-size: 6vw; }
+    h3 { font-size: 4.5vw; }
+    .question-group { margin-bottom: 10vw; }
+    label { display: block; margin: 2vw 0; font-size: 4vw; }
+    input[type="number"] { width: 15vw; font-size: 4vw; padding: 1vw; margin-right: 2vw; }
+    button { background: gold; color: black; padding: 3vw 6vw; font-size: 4.5vw; border: none; border-radius: 1vw; cursor: pointer; margin: 3vw 1vw; }
+    .results { margin-top: 8vw; font-size: 4.5vw; text-align: center; }
+    .button-group { text-align: center; margin-top: 8vw; }
+    .button-group a button { display: inline-block; margin: 2vw 2vw; }
+    p, .description { font-size: 4vw; line-height: 1.5; text-align: center; }
+  </style>
+</head>
+<body>
+  <h1>Energy Frequency Discovery Test</h1>
+  <p class="description">This is a preliminary test. Only a Ritual can reveal your true Pure You Frequencies.</p>
+  <form id="frequencyTest">
+    <div id="questions"></div>
+    <div style="text-align:center;"><button type="submit">Reveal My Frequencies</button></div>
+  </form>
+  <div class="results" id="results"></div>
+
+  <script>
+    const frequencies = [
+      { name: "Red", labels: ["like solving a tough puzzle", "like diving into a strategy game", "like winning an argument", "like mapping a complex theory", "like scripting the perfect plan", "like decoding secrets", "like outsmarting a challenge", "like mastering a concept", "like analyzing deep truths", "like an excellent story book", "like finding a hidden pattern"] },
+      { name: "Blue", labels: ["like tuning into silence", "like observing the stars", "like a monk in meditation", "like syncing with a metronome", "like aligning thoughts to rhythm", "like a calm, clear sky", "like concentrating on a single flame", "like feeling perfectly in sync", "like staying locked on a goal", "like watching a television show", "like steady waves on a lake"] },
+      { name: "White", labels: ["like holding warm clay", "like gripping smooth marble", "like sculpting truth from form", "like grounding to the Earth", "like a steady heartbeat", "like muscle meeting motion", "like skin on stone", "like breath hitting cool air", "like solid structure", "like a warm, weighted blanket", "like firm hands guiding you"] },
+      { name: "Orange", labels: ["like laughter echoing", "like heartbeats syncing", "like collapsing into arms", "like tears shared freely", "like a soft gaze held", "like breaking into song together", "like touching without fear", "like truth spoken in tremble", "like dancing in the rain", "like laughing in a crowd", "like confessing joy"] },
+      { name: "Purple", labels: ["like reading forbidden scripture", "like kissing a prophet", "like dreaming awake", "like channeling future memories", "like painting lust into air", "like finding hidden meaning", "like sacred intimacy", "like divine temptation", "like whispering fate", "like hearing a sacred secret", "like vision becoming real"] },
+      { name: "Black", labels: ["like vanishing into shadow", "like breathing in darkness", "like candlelight on skin", "like the hush of midnight", "like secrets carved in silence", "like surrender to the unseen", "like slow, sacred motion", "like moving unseen", "like eyes closed in trust", "like a quiet room lit only by candlelight", "like night cloaked desire"] },
+      { name: "Pink", labels: ["like floating into nothing", "like dissolving into peace", "like letting go fully", "like trust so deep you vanish", "like warm drift and surrender", "like edges gone and breath slow", "like disappearing safely", "like being lost on purpose", "like touch without weight", "like floating underwater", "like soft oblivion"] },
+      { name: "Green", labels: ["like dancing in sunlight", "like kissing with laughter", "like running barefoot", "like spinning with joy", "like orgasming while smiling", "like bliss you can’t explain", "like gasping with delight", "like yelling out happiness", "like sudden rush of ecstasy", "like dancing without music", "like giggling through tears"] }
+    ];
+
+    const colorDescriptions = {
+      Red: "Intelligence – strategic thinking, clarity, structured desire.",
+      Blue: "Focus – attention, silence, deep concentration.",
+      White: "Tangible – groundedness, reality, physical connection.",
+      Orange: "Open – vulnerability, sharing, social pleasure.",
+      Purple: "Vision – mysticism, prophecy, erotic imagination.",
+      Black: "Private – solitude, secrecy, shadow play.",
+      Pink: "Empty – surrender, stillness, trance-like peace.",
+      Green: "Euphoria – laughter, pleasure, joyful energy."
+    };
+
+    const questions = [
+      "When you're most yourself, you feel...",
+      "In moments of intimacy or arousal, your instinct is to...",
+      "During stress, you seek...",
+      "Your ideal Ritual would feel...",
+      "What does your Pure You crave the most?",
+      "When you connect with someone new, you tend to...",
+      "If you were alone for a day, what would you most likely do?",
+      "Your deepest memories tend to be...",
+      "You want others to see you as...",
+      "The idea of 'Release' means to you...",
+      "When you experience joy, what does it look like?"
+    ];
+
+    const form = document.getElementById("frequencyTest");
+    const qContainer = document.getElementById("questions");
+
+    questions.forEach((q, i) => {
+      const div = document.createElement("div");
+      div.classList.add("question-group");
+      div.innerHTML = `<h3>Q${i+1}. ${q}</h3>`;
+      frequencies.forEach(f => {
+        div.innerHTML += `<label><input type="number" name="q${i}_${f.name}" min="1" max="9" required> ${f.labels[i]}</label>`;
+      });
+      qContainer.appendChild(div);
+    });
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const totals = {};
+      frequencies.forEach(f => totals[f.name] = 0);
+      for (let i = 0; i < questions.length; i++) {
+        for (let f of frequencies) {
+          const val = parseInt(form[`q${i}_${f.name}`].value);
+          if (!isNaN(val)) totals[f.name] += val;
+        }
+      }
+      const sorted = Object.entries(totals).sort((a,b) => b[1] - a[1]);
+      const top2 = sorted.slice(0,2).map(c => c[0]);
+      const resultsText = `
+        <h2>Your Energy Frequencies</h2>
+        <p><strong>${top2[0]}</strong>: ${colorDescriptions[top2[0]]}</p>
+        <p><strong>${top2[1]}</strong>: ${colorDescriptions[top2[1]]}</p>
+        <p>To truly awaken, you must now perform the Energy Frequency Ritual. Let these colors guide your next Rite.</p>
+        <div class="button-group">
+          <a href="https://cotuosect1.wixsite.com/churchoftheuo/ritual-masses" target="_blank"><button>Begin the Ritual</button></a>
+          <a href="https://cotuosect1.wixsite.com/churchoftheuo" target="_blank"><button>Visit the Website</button></a>
+        </div>
+      `;
+      document.getElementById("results").innerHTML = resultsText;
+    });
+  </script>
+</body>
+</html>
